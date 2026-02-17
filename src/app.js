@@ -165,9 +165,9 @@ function initEvents() {
   document.addEventListener("click", (e) => {
     const menu = $("mobile-menu");
     const btn = $("menu-btn");
-    if (menu?.classList.contains("show") && 
-        !menu.contains(e.target) && 
-        !btn?.contains(e.target)) {
+    if (menu?.classList.contains("show") &&
+      !menu.contains(e.target) &&
+      !btn?.contains(e.target)) {
       menu.classList.remove("show");
     }
   });
@@ -262,14 +262,14 @@ function initEvents() {
     const txt = t();
     let html = '<table class="library-table"><thead><tr>';
     html += `<th>${txt.libraryCharacter}</th><th>${txt.libraryVariants}</th><th>${txt.libraryCount}</th></tr></thead><tbody>`;
-    
+
     for (const [char, variants] of Object.entries(lib)) {
       if (Array.isArray(variants)) {
         html += `<tr><td><strong>${escapeHtml(char)}</strong></td><td class="library-variants">${escapeHtml(variants.join(' '))}</td><td>${variants.length}</td></tr>`;
       }
     }
     html += `</tbody></table><p class="library-total">${txt.libraryTotal.replace('{count}', Object.keys(lib).length)}</p>`;
-    
+
     $("library-content").innerHTML = html;
     showModal("library-modal");
   });
@@ -335,9 +335,9 @@ function initEvents() {
 async function initializeApp() {
   await loadI18n();
   state.currentLang = navigator.language?.startsWith("zh") ? "zh" : "en";
-  
+
   await new Promise(r => setTimeout(r, 100));
-  
+
   applyLanguage();
   initEvents();
   updateOptionVisibility();

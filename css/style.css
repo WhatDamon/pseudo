@@ -180,7 +180,7 @@ a:hover {
   display: flex;
 }
 
-.panel > md-filled-text-field {
+.panel>md-filled-text-field {
   flex: 1;
   width: 100%;
 }
@@ -286,13 +286,23 @@ a:hover {
 }
 
 @keyframes modal-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes modal-fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 .modal-backdrop {
