@@ -12,9 +12,10 @@ const state = {
 const $ = (id) => document.getElementById(id);
 
 async function loadI18n() {
+  const basePath = window.BASE_PATH || './';
   const [i18nRes, metaRes] = await Promise.all([
-    fetch("../pseudo/data/i18n.json"),
-    fetch("../pseudo/data/metadata.json")
+    fetch(basePath + "data/i18n.json"),
+    fetch(basePath + "data/metadata.json")
   ]);
   state.i18nData = await i18nRes.json();
   state.metadata = await metaRes.json();
@@ -131,7 +132,8 @@ function escapeHtml(text) {
 
 async function loadCharLib() {
   if (!state.charLib) {
-    state.charLib = await (await fetch("../data/character.json")).json();
+    const basePath = window.BASE_PATH || './';
+    state.charLib = await (await fetch(basePath + "data/character.json")).json();
   }
   return state.charLib;
 }
