@@ -1,5 +1,5 @@
 import { processText } from "./processor.js";
-import { state, getState } from "./state.js";
+import { state, getState, saveHistory, loadHistory, clearHistoryStorage, saveMode } from "./state.js";
 import { setLang, t, applyLanguage } from "./i18n.js";
 import { $, escapeHtml, showToast, showModal, hideModal } from "./dom.js";
 
@@ -25,10 +25,18 @@ export function initEvents() {
   const modeRadios = document.querySelectorAll('md-radio[name="mode"]');
   const updateMode = () => {
     modeRadios.forEach(radio => {
-      if (radio.checked) state.currentMode = radio.value;
+      if (radio.checked) {
+        state.currentMode = radio.value;
+        saveMode(radio.value);
+      }
     });
   };
   modeRadios.forEach(radio => radio.addEventListener('change', updateMode));
+  modeRadios.forEach(radio => {
+    if (radio.value === state.currentMode) {
+      radio.checked = true;
+    }
+  });
   updateMode();
 
   $("menu-btn")?.addEventListener("click", () => {
@@ -87,6 +95,7 @@ export function initEvents() {
           input: text,
           output: result
         });
+        saveHistory(state.processingHistory);
       }
     } catch (e) {
       $("output-text").value = "Error: " + e.message;
@@ -127,6 +136,7 @@ export function initEvents() {
 
   $("clear-history-btn")?.addEventListener("click", () => {
     state.processingHistory = [];
+    clearHistoryStorage();
     $("history-content").innerHTML = `<p>${t().historyCleared}</p>`;
   });
 
