@@ -2,7 +2,8 @@ let charLib = null;
 
 async function loadCharLib() {
   if (!charLib) {
-    const response = await fetch("../data/character.json");
+    const basePath = window.BASE_PATH || './';
+    const response = await fetch(basePath + "data/character.json");
     charLib = await response.json();
   }
 }
