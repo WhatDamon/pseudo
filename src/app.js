@@ -13,8 +13,8 @@ const $ = (id) => document.getElementById(id);
 
 async function loadI18n() {
   const [i18nRes, metaRes] = await Promise.all([
-    fetch("../data/i18n.json"),
-    fetch("../data/metadata.json")
+    fetch("../pseudo/data/i18n.json"),
+    fetch("../pseudo/data/metadata.json")
   ]);
   state.i18nData = await i18nRes.json();
   state.metadata = await metaRes.json();
