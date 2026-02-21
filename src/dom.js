@@ -32,6 +32,6 @@ export function hideModal(id) {
     setTimeout(() => {
       modal.classList.remove("hiding");
       modal.style.display = "none";
-    }, 250);
+    }, 300);
   }
 }

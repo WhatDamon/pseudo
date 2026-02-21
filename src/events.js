@@ -1,7 +1,7 @@
-import { processText } from "./processor.js";
-import { state, saveHistory, clearHistoryStorage, saveMode, saveSession } from "./state.js";
+import { $, escapeHtml, hideModal, showModal, showToast } from "./dom.js";
 import { setLang, t } from "./i18n.js";
-import { $, escapeHtml, showToast, showModal, hideModal } from "./dom.js";
+import { processText } from "./processor.js";
+import { clearHistoryStorage, saveHistory, saveMode, saveSession, state } from "./state.js";
 
 export async function loadCharLib() {
   if (!state.charLib) {
@@ -40,16 +40,26 @@ export function initEvents() {
   updateMode();
 
   $("menu-btn")?.addEventListener("click", () => {
-    $("mobile-menu")?.classList.toggle("show");
+    const menu = $("mobile-menu");
+    const menuBtn = $("menu-btn");
+    const iconSpan = menuBtn?.querySelector("span.material-icons") || menuBtn?.querySelector("md-icon");
+    const isShown = menu?.classList.toggle("show");
+    if (iconSpan) {
+      iconSpan.textContent = isShown ? "close" : "menu";
+    }
   });
 
   document.addEventListener("click", (e) => {
     const menu = $("mobile-menu");
-    const btn = $("menu-btn");
+    const menuBtn = $("menu-btn");
+    const iconSpan = menuBtn?.querySelector("span.material-icons") || menuBtn?.querySelector("md-icon");
     if (menu?.classList.contains("show") &&
       !menu.contains(e.target) &&
-      !btn?.contains(e.target)) {
+      !menuBtn?.contains(e.target)) {
       menu.classList.remove("show");
+      if (iconSpan) {
+        iconSpan.textContent = "menu";
+      }
     }
   });
 
