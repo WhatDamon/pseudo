@@ -54,18 +54,18 @@
   --md-sys-typescale-label-large-size: 14px;
   --md-sys-typescale-label-large-weight: 500;
   --md-sys-typescale-title-large-font: Roboto, sans-serif;
-  --md-sys-typescale-title-large-size: 22px;
-  --md-sys-typescale-title-large-weight: 400;
+  --md-sys-typescale-title-large-size: 24px;
+  --md-sys-typescale-title-large-weight: 500;
   --md-sys-typescale-title-medium-font: Roboto, sans-serif;
-  --md-sys-typescale-title-medium-size: 16px;
-  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-size: 18px;
+  --md-sys-typescale-title-medium-weight: 600;
   
   --md-sys-shape-corner-none: 0px;
-  --md-sys-shape-corner-extra-small: 4px;
-  --md-sys-shape-corner-small: 8px;
-  --md-sys-shape-corner-medium: 12px;
-  --md-sys-shape-corner-large: 16px;
-  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-extra-small: 6px;
+  --md-sys-shape-corner-small: 12px;
+  --md-sys-shape-corner-medium: 16px;
+  --md-sys-shape-corner-large: 20px;
+  --md-sys-shape-corner-extra-large: 32px;
   --md-sys-shape-corner-full: 9999px;
 }
 
@@ -174,13 +174,13 @@ md-text-button .material-icons {
 .mobile-menu.show {
   display: flex;
   flex-direction: column;
-  animation: menu-appear 0.2s ease-out;
+  animation: menu-appear 0.25s cubic-bezier(0.2, 0, 0, 1);
 }
 
 @keyframes menu-appear {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(-8px);
+    transform: scale(0.96) translateY(-10px);
   }
   to {
     opacity: 1;
@@ -329,14 +329,29 @@ md-radio {
 
 md-filled-button {
   --md-filled-button-container-shape: var(--md-sys-shape-corner-medium);
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+md-filled-button:active {
+  transform: scale(0.98);
 }
 
 md-outlined-button {
   --md-outlined-button-outline-shape: var(--md-sys-shape-corner-medium);
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+md-outlined-button:active {
+  transform: scale(0.98);
 }
 
 md-text-button {
   --md-text-button-container-shape: var(--md-sys-shape-corner-medium);
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+md-text-button:active {
+  transform: scale(0.98);
 }
 
 .options {
@@ -449,12 +464,12 @@ md-text-button {
 
 .modal.show {
   display: flex;
-  animation: modal-fade-in 0.3s ease;
+  animation: modal-fade-in 0.25s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .modal.hiding {
   display: flex;
-  animation: modal-fade-out 0.25s ease forwards;
+  animation: modal-fade-out 0.2s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
 @keyframes modal-fade-in {
@@ -484,7 +499,7 @@ md-text-button {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0);
-  transition: background 0.3s ease;
+  transition: background 0.25s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .modal.show .modal-backdrop {
@@ -506,17 +521,28 @@ md-text-button {
 }
 
 .modal-panel[role="dialog"] {
-  animation: dialog-enter 0.3s ease;
+  animation: dialog-enter 0.28s cubic-bezier(0.2, 0, 0, 1);
 }
 
 @keyframes dialog-enter {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.94) translateY(8px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes dialog-exit {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.94) translateY(8px);
   }
 }
 

@@ -1,14 +1,24 @@
 import { $, escapeHtml, hideModal, showModal, showToast } from "./dom.js";
 import { setLang, t } from "./i18n.js";
 import { processText } from "./processor.js";
-import { clearHistoryStorage, saveHistory, saveMode, saveSession, state } from "./state.js";
+import { clearHistoryStorage, loadCharLib, saveHistory, saveMode, saveSession, state } from "./state.js";
 
-export async function loadCharLib() {
-  if (!state.charLib) {
-    const basePath = window.BASE_PATH || './';
-    state.charLib = await (await fetch(`${basePath}data/character.json`)).json();
-  }
-  return state.charLib;
+function renderLibraryModal() {
+  loadCharLib().then(lib => {
+    const txt = t();
+    let html = '<table class="library-table"><thead><tr>';
+    html += `<th>${txt.libraryCharacter}</th><th>${txt.libraryVariants}</th><th>${txt.libraryCount}</th></tr></thead><tbody>`;
+
+    for (const [char, variants] of Object.entries(lib)) {
+      if (Array.isArray(variants)) {
+        html += `<tr><td><strong>${escapeHtml(char)}</strong></td><td class="library-variants">${escapeHtml(variants.join(' '))}</td><td>${variants.length}</td></tr>`;
+      }
+    }
+    html += `</tbody></table><p class="library-total">${txt.libraryTotal.replace('{count}', Object.keys(lib).length)}</p>`;
+
+    $("library-content").innerHTML = html;
+    showModal("library-modal");
+  });
 }
 
 export function updateOptionVisibility() {
@@ -152,39 +162,13 @@ export function initEvents() {
     $("history-content").innerHTML = `<p>${t().historyCleared}</p>`;
   });
 
-  $("library-btn-top")?.addEventListener("click", async () => {
-    const lib = await loadCharLib();
-    const txt = t();
-    let html = '<table class="library-table"><thead><tr>';
-    html += `<th>${txt.libraryCharacter}</th><th>${txt.libraryVariants}</th><th>${txt.libraryCount}</th></tr></thead><tbody>`;
-
-    for (const [char, variants] of Object.entries(lib)) {
-      if (Array.isArray(variants)) {
-        html += `<tr><td><strong>${escapeHtml(char)}</strong></td><td class="library-variants">${escapeHtml(variants.join(' '))}</td><td>${variants.length}</td></tr>`;
-      }
-    }
-    html += `</tbody></table><p class="library-total">${txt.libraryTotal.replace('{count}', Object.keys(lib).length)}</p>`;
-
-    $("library-content").innerHTML = html;
-    showModal("library-modal");
-  });
+  $("library-btn-top")?.addEventListener("click", () => renderLibraryModal());
 
   $("about-btn")?.addEventListener("click", () => showModal("about-modal"));
 
-  $("library-btn-mobile")?.addEventListener("click", async () => {
+  $("library-btn-mobile")?.addEventListener("click", () => {
     $("mobile-menu")?.classList.remove("show");
-    const lib = await loadCharLib();
-    const txt = t();
-    let html = '<table class="library-table"><thead><tr>';
-    html += `<th>${txt.libraryCharacter}</th><th>${txt.libraryVariants}</th><th>${txt.libraryCount}</th></tr></thead><tbody>`;
-    for (const [char, variants] of Object.entries(lib)) {
-      if (Array.isArray(variants)) {
-        html += `<tr><td><strong>${escapeHtml(char)}</strong></td><td class="library-variants">${escapeHtml(variants.join(' '))}</td><td>${variants.length}</td></tr>`;
-      }
-    }
-    html += `</tbody></table><p class="library-total">${txt.libraryTotal.replace('{count}', Object.keys(lib).length)}</p>`;
-    $("library-content").innerHTML = html;
-    showModal("library-modal");
+    renderLibraryModal();
   });
 
   $("about-btn-mobile")?.addEventListener("click", () => {
